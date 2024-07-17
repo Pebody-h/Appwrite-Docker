@@ -12,7 +12,7 @@ services:
       - key: _APP_DOMAIN
         value: "${_APP_DOMAIN}"
       - key: _DB_HOST
-        generateValue: mariadb
+        generateValue: true
       - key: _DB_PORT
         value: "3306"
       - key: _DB_USER
@@ -20,7 +20,7 @@ services:
       - key: _DB_PASSWORD
         sync: false
       - key: _REDIS_HOST
-        generateValue: redis
+        generateValue: true
       - key: _REDIS_PORT
         value: "6379"
   - type: pserv
@@ -42,4 +42,10 @@ services:
     name: redis-service
     repo: "https://github.com/redis/redis"
     rootDir: .
-    dockerCommand: docker run -d --name redis
+    dockerCommand: >-
+      docker run -d --name redis redis:latest
+    envVars:
+      - key: REDIS_PASSWORD
+        value: "password"
+      - key: REDIS_PORT
+        value: "6379"
