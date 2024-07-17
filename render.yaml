@@ -23,6 +23,13 @@ services:
         generateValue: redis
       - key: _REDIS_PORT
         value: "6379"
+  - type: redis
+    name: redis-service
+    ipAllowList: # Required
+      - source: 0.0.0.0/0
+        description: everywhere
+    plan: free # Default: starter
+    maxmemoryPolicy: noeviction # Default: allkeys-lru
   - type: pserv
     runtime: docker
     name: mariadb-service
@@ -37,9 +44,3 @@ services:
         sync: false
       - key: MYSQL_DATABASE
         value: appwrite
-  - type: cache
-    runtime: docker
-    name: redis-service
-    repo: "https://github.com/redis/redis"
-    rootDir: .
-    dockerCommand: docker run -d --name redis
