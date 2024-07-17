@@ -1,48 +1,45 @@
 version: "3"
 services:
-  appwrite:
-    - type: web
-      runtime: docker
-      name: appwrite-service
-      repo: "https://github.com/appwrite/appwrite"
-      rootDir: .
-      dockerCommand: >-
-        docker run -d --name appwrite -v /tmp/.docker.sock:/var/run/docker.sock -v
-        $(pwd)/appwrite:/usr/src/code/appwrite:rw appwrite/appwrite:1.5.7
-      envVars:
-        - key: _APP_DOMAIN
-          value: "${_APP_DOMAIN}"
-        - key: _DB_HOST
-          generateValue: mariadb
-        - key: _DB_PORT
-          value: "3306"
-        - key: _DB_USER
-          value: root
-        - key: _DB_PASSWORD
-          sync: false
-        - key: _REDIS_HOST
-          generateValue: redis
-        - key: _REDIS_PORT
-          value: "6379"
-  mariadb:
-    - type: db
-      runtime: docker
-      name: mariadb-service
-      repo: >-
-        https://github.com/mariadb-corporation/database/blob/master/getting-started/cloud-provisioning.md
-      rootDir: .
-      dockerCommand: >-
-        docker run -d --name mariadb -e MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
-        -e MYSQL_DATABASE=appwrite mariadb:10.5
-      envVars:
-        - key: MYSQL_ROOT_PASSWORD
-          sync: false
-        - key: MYSQL_DATABASE
-          value: appwrite
-  redis:
-    - type: cache
-      runtime: docker
-      name: redis-service
-      repo: "https://github.com/redis/redis"
-      rootDir: .
-      dockerCommand: docker run -d --name redis
+  - type: web
+    runtime: docker
+    name: appwrite-service
+    repo: "https://github.com/appwrite/appwrite"
+    rootDir: .
+    dockerCommand: >-
+      docker run -d --name appwrite -v /tmp/.docker.sock:/var/run/docker.sock -v
+      $(pwd)/appwrite:/usr/src/code/appwrite:rw appwrite/appwrite:1.5.7
+    envVars:
+      - key: _APP_DOMAIN
+        value: "${_APP_DOMAIN}"
+      - key: _DB_HOST
+        generateValue: mariadb
+      - key: _DB_PORT
+        value: "3306"
+      - key: _DB_USER
+        value: root
+      - key: _DB_PASSWORD
+        sync: false
+      - key: _REDIS_HOST
+        generateValue: redis
+      - key: _REDIS_PORT
+        value: "6379"
+  - type: db
+    runtime: docker
+    name: mariadb-service
+    repo: >-
+      https://github.com/mariadb-corporation/database/blob/master/getting-started/cloud-provisioning.md
+    rootDir: .
+    dockerCommand: >-
+      docker run -d --name mariadb -e MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
+      -e MYSQL_DATABASE=appwrite mariadb:10.5
+    envVars:
+      - key: MYSQL_ROOT_PASSWORD
+        sync: false
+      - key: MYSQL_DATABASE
+        value: appwrite
+  - type: cache
+    runtime: docker
+    name: redis-service
+    repo: "https://github.com/redis/redis"
+    rootDir: .
+    dockerCommand: docker run -d --name redis
