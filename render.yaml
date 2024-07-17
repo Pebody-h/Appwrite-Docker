@@ -23,7 +23,7 @@ services:
         generateValue: redis
       - key: _REDIS_PORT
         value: "6379"
-  - type: db
+  - type: service
     runtime: docker
     name: mariadb-service
     repo: >-
