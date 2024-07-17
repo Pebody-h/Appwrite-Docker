@@ -1,0 +1,33 @@
+version: '3'
+services:
+  appwrite:
+    image: appwrite/appwrite:latest
+    restart: always
+    ports:
+      - "80:80"
+    volumes:
+      - "/var/run/docker.sock:/var/run/docker.sock"
+    environment:
+      _APP_DOMAIN: http://localhost
+      _DB_HOST: mariadb
+      _DB_PORT: 3306
+      _DB_USER: root
+      _DB_PASSWORD: password
+      _REDIS_HOST: redis
+      _REDIS_PORT: 6379
+
+  mariadb:
+    image: mariadb:11.2
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: password
+      MYSQL_DATABASE: appwrite
+    volumes:
+      - db_data:/var/lib/mysql
+
+  redis:
+    image: redis:6-alpine
+    restart: always
+
+volumes:
+  db_data:
