@@ -1,9 +1,10 @@
+version: "3"
 services:
   appwrite:
     type: web
     env: docker
-    buildCommand: docker pull appwrite/appwrite:0.15.3
-    startCommand: docker run -d --restart always -p 80:80 -e _APP_DOMAIN=${_APP_DOMAIN} -e _DB_HOST=mariadb -e _DB_PORT=3306 -e _DB_USER=root -e _DB_PASSWORD=password -e _REDIS_HOST=redis -e _REDIS_PORT=6379 appwrite/appwrite:0.15.3
+    buildCommand: echo "Using Docker image"
+    startCommand: docker run -d --restart always -p 80:80 -e _APP_DOMAIN=${_APP_DOMAIN} -e _DB_HOST=mariadb -e _DB_PORT=3306 -e _DB_USER=root -e _DB_PASSWORD=${_DB_PASSWORD} -e _REDIS_HOST=redis -e _REDIS_PORT=6379 appwrite/appwrite:0.15.3
     envVars:
       - key: _APP_DOMAIN
         value: ${_APP_DOMAIN}
@@ -14,25 +15,25 @@ services:
       - key: _DB_USER
         value: root
       - key: _DB_PASSWORD
-        value: password
+        sync: false
       - key: _REDIS_HOST
         generateValue: redis
       - key: _REDIS_PORT
         value: "6379"
 
   mariadb:
-    type: pserv
+    type: db
     env: docker
-    buildCommand: docker pull mariadb:10.5
-    startCommand: docker run -d --restart always -e MYSQL_ROOT_PASSWORD=password -e MYSQL_DATABASE=appwrite mariadb:10.5
+    buildCommand: echo "Using Docker image"
+    startCommand: docker run -d --restart always -e MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD} -e MYSQL_DATABASE=appwrite mariadb:10.5
     envVars:
       - key: MYSQL_ROOT_PASSWORD
-        value: password
+        sync: false
       - key: MYSQL_DATABASE
         value: appwrite
 
   redis:
-    type: pserv
+    type: cache
     env: docker
-    buildCommand: docker pull redis:6-alpine
+    buildCommand: echo "Using Docker image"
     startCommand: docker run -d --restart always redis:6-alpine
