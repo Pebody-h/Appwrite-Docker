@@ -37,7 +37,7 @@ services:
         sync: false
       - key: MYSQL_DATABASE
         value: appwrite
-  - type: redis
+  - type: pserv
     runtime: docker
     name: redis-service
     repo: "https://github.com/redis/redis"
